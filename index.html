@@ -1,0 +1,2495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renault Mégane — Configurateur</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:'Read-Regular', Arial, Helvetica, sans-serif;
+    background:#ffffff;
+    color:#000000;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
+
+header{
+    height:60px;
+    background:#ffffff;
+    color:#000000;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 40px;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.header-title{
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-weight:bold;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:55% 45%;
+    min-height:calc(100vh - 60px);
+}
+
+.visual{
+    background:#f4f4f4;
+    position:sticky;
+    top:0;
+    height:calc(100vh - 60px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.visual img{
+    aspect-ratio: 3 / 2;
+    width: 85%;
+    max-height: 80%;
+    object-fit: contain;
+}
+
+.no-image{
+    text-align:center;
+    color:#777;
+    aspect-ratio: 3 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.view-buttons{
+    position:absolute;
+    bottom:20px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.view-buttons button{
+    background:white;
+    border:1px solid #ccc;
+    padding:8px 14px;
+    font-size:11px;
+    border-radius:2px;
+}
+
+.panel{
+    background:white;
+    padding:40px;
+    padding-bottom:120px;
+}
+
+.title{
+    padding-bottom:20px;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.title small{
+    color:#000;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.title h1{
+    margin:6px 0;
+    font-size:28px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.title p{
+    color:#666;
+    font-size:13px;
+    margin:0;
+}
+
+.section{
+    padding:30px 0;
+    border-bottom:1px solid #e5e5e5;
+}
+
+.section h2{
+    margin-top:0;
+    margin-bottom:20px;
+    font-size:16px;
+    text-transform:lowercase;
+    font-weight:bold;
+}
+
+.section h2::first-letter{
+    text-transform:uppercase;
+}
+
+.color-group-title{
+    font-size:12px;
+    font-weight:bold;
+    color:#555;
+    margin:15px 0 10px 0;
+    width:100%;
+}
+
+.grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.choice,
+.engine{
+    position:relative;
+    background:white;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.choice{
+    padding:10px 20px;
+    text-align:center;
+    min-width:100px;
+}
+
+.engine{
+    border-radius:8px;
+}
+
+.choice.active,
+.engine.active{
+    background:#000000;
+    color:#ffffff;
+    border:2px solid #ffcc00;
+    box-shadow:0 0 0 1px #ffcc00;
+}
+
+.choice strong{
+    display:block;
+    font-size:13px;
+}
+
+.choice span{
+    display:block;
+    margin-top:4px;
+    font-size:11px;
+    color:#666;
+}
+
+.choice.active span,
+.engine.active small{
+    color:#ccc;
+}
+
+.choice.active::after,
+.engine.active::after,
+.option.active::after{
+    content:"✓";
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    background:#ffcc00;
+    color:#000;
+    font-size:10px;
+    font-weight:bold;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    z-index:2;
+}
+
+.available-fuels{
+    margin-top:15px;
+    padding:12px 0;
+}
+
+.available-fuels-title{
+    font-size:11px;
+    color:#777;
+    margin-bottom:8px;
+}
+
+.fuel-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.fuel{
+    background:#f4f4f4;
+    border:1px solid #ddd;
+    padding:4px 10px;
+    font-size:11px;
+    border-radius:2px;
+}
+
+.engine{
+    padding:14px 18px;
+    margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+}
+
+.engine strong{
+    font-size:13px;
+}
+
+.engine small{
+    display:block;
+    color:#666;
+    margin-top:3px;
+}
+
+.engine-price{
+    font-weight:bold;
+    font-size:13px;
+}
+
+.colors{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.color,
+.wheel,
+.upholstery{
+    position:relative;
+    background:transparent;
+    border:none;
+    padding:0;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    cursor:pointer;
+}
+
+.color.active,
+.upholstery.active{
+    background:transparent;
+    color:inherit;
+    border:none;
+    box-shadow:none;
+    border-radius:0;
+    padding:0;
+}
+
+.color.active .color-price,
+.upholstery.active .upholstery-price{
+    color:#777;
+}
+
+.color-round,
+.wheel-round,
+.upholstery-round{
+    position:relative;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    overflow:visible;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #ccc;
+    background:#eee;
+    margin-bottom:8px;
+    padding:2px;
+}
+
+.color.active .color-round,
+.wheel.active .wheel-round,
+.upholstery.active .upholstery-round{
+    border:2px solid #ffcc00;
+    box-shadow:0 0 0 2px #ffcc00;
+}
+
+.color.active .color-round::after,
+.wheel.active .wheel-round::after,
+.upholstery.active .upholstery-round::after{
+    content:"✓";
+    position:absolute;
+    top:-4px;
+    right:-4px;
+    background:#ffcc00;
+    color:#000;
+    font-size:9px;
+    font-weight:bold;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    z-index:2;
+}
+
+.color-round-inner{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+}
+
+.wheel-round img,
+.upholstery-round img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    display:block;
+}
+
+.color-info,
+.wheel-info,
+.upholstery-info{
+    text-align:center;
+}
+
+.color-name,
+.wheel-name,
+.upholstery-name{
+    display:block;
+    font-size:11px;
+    font-weight:normal;
+}
+
+.color-price,
+.wheel-price,
+.upholstery-price{
+    display:block;
+    margin-top:2px;
+    font-size:10px;
+    color:#777;
+}
+
+.wheel-grid,
+.upholstery-grid{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.image-missing{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:#eee;
+    color:#999;
+    font-size:8px;
+    border-radius:50%;
+}
+
+.option-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap:15px;
+}
+
+.option-category{
+    margin-bottom:20px;
+    border-top:1px solid #eee;
+    padding-top:15px;
+}
+
+.option-category-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+    font-size:13px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+.option-category-title.collapsible{
+    cursor:pointer;
+    user-select:none;
+}
+
+.option-category-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.option-arrow{
+    font-size:12px;
+    color:#000;
+}
+
+.options-count{
+    font-size:12px;
+    color:#666;
+    margin:-8px 0 15px 0;
+}
+
+.option-category-count{
+    display:none;
+    background:#000000;
+    color:white;
+    min-width:18px;
+    height:18px;
+    border-radius:50%;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+}
+
+.option-category-count.visible{
+    display:inline-flex;
+}
+
+.option{
+    position:relative;
+    background:white;
+    border:1px solid #e5e5e5;
+    padding:0 0 12px 0;
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    overflow:hidden;
+    border-radius:4px;
+}
+
+.option.active{
+    border:2px solid #ffcc00;
+    box-shadow:0 0 0 1px #ffcc00;
+}
+
+.option-img-container{
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    background:#eee;
+}
+
+.option-img-container img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.option-content{
+    padding:10px 12px 0 12px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+}
+
+.option-content strong{
+    font-size:12px;
+    display:block;
+    margin-bottom:4px;
+}
+
+.option-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:auto;
+    padding-top:8px;
+}
+
+.option-check{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    color:#333;
+}
+
+.option-price{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.option-description{
+    display:block;
+    margin-top:2px;
+    font-size:10px;
+    color:#777;
+}
+
+.empty-section-msg{
+    font-size:12px;
+    color:#888;
+    font-style:italic;
+}
+
+.summary{
+    background:#f9f9f9;
+    padding:25px;
+    margin-top:30px;
+    border-radius:4px;
+}
+
+.summary-title{
+    font-weight:bold;
+    text-transform:lowercase;
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+.summary-title::first-letter{
+    text-transform:uppercase;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #e5e5e5;
+    padding:10px 0;
+    font-size:12px;
+}
+
+.summary-row span{
+    color:#666;
+}
+
+.price-bar{
+    position:fixed;
+    bottom:0;
+    right:0;
+    width:45%;
+    background:#ffffff;
+    color:#000000;
+    padding:15px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:50;
+    border-top:1px solid #e5e5e5;
+    box-shadow:0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.total-label{
+    font-size:11px;
+    color:#666;
+    text-transform:uppercase;
+}
+
+.total-price{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.save-button{
+    border:none;
+    background:#000000;
+    color:#ffffff;
+    padding:12px 24px;
+    font-weight:bold;
+    font-size:12px;
+    border-radius:2px;
+}
+
+@media(max-width:900px){
+    .container{
+        grid-template-columns:1fr;
+    }
+
+    .visual{
+        position:relative;
+        height:350px;
+    }
+
+    .price-bar{
+        width:100%;
+    }
+}
+
+@media(max-width:600px){
+    header{
+        padding:0 20px;
+    }
+
+    .panel{
+        padding:20px;
+    }
+
+    .header-title{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">RENAULT</div>
+    <div class="header-title">Mégane · Configurateur</div>
+</header>
+
+<div class="container">
+
+<section class="visual">
+
+<div id="carVisual" class="no-image">
+    <strong>Votre Renault Mégane</strong>
+    <br><br>
+    Ajoutez une photo appelée :
+    <br><br>
+    <strong>front.jpg</strong>
+</div>
+
+<div class="view-buttons">
+    <button onclick="changeView('front')">Avant</button>
+    <button onclick="changeView('rear')">Arrière</button>
+    <button onclick="changeView('side')">Profil</button>
+    <button onclick="changeView('wheels')">Jantes</button>
+    <button onclick="changeView('dashboard')">Tableau de bord</button>
+    <button onclick="changeView('upholstery')">Sellerie</button>
+</div>
+
+</section>
+
+<main class="panel">
+
+<div class="title">
+    <small>CONFIGUREZ VOTRE VÉHICULE</small>
+    <h1>Renault Mégane</h1>
+    <p>Personnalisez votre Mégane selon vos envies.</p>
+</div>
+
+<div id="sectionsContainer"></div>
+
+<section class="summary">
+    <div class="summary-title">En résumé</div>
+    <div id="summary"></div>
+</section>
+
+</main>
+</div>
+
+<div class="price-bar">
+
+<div>
+    <div class="total-label">Prix total</div>
+    <div class="total-price" id="totalPrice">—</div>
+</div>
+
+<button class="save-button" onclick="saveConfiguration()">
+    ENREGISTRER
+</button>
+
+</div>
+
+<script>
+
+/* =========================================================
+   GÉNÉRATIONS
+========================================================= */
+
+const generations={
+    megane3:"Renault Mégane III phase 2 (2012)",
+    megane4b:"Renault Mégane IV phase 2 (2021)",
+    megane4:"Renault Mégane IV phase 2 (2023)",
+    megane5:"Renault Mégane V phase 2 (2026)"
+};
+
+
+/* =========================================================
+   MOTORISATIONS
+========================================================= */
+
+const engines={
+
+    authentique:[
+        ["1.2 TCe 115ch energy eco²","Essence",20100],
+        ["1.5 dCi 110ch FAP eco²","Diesel",23050],
+        ["1.5 dCi 90ch FAP eco²","Diesel",21600],
+        ["1.6 16v 110ch BioEthanol eco²","BioÉthanol",19800]
+    ],
+
+    expression:[
+        ["1.2 TCe 115ch Stop&Start energy eco²","Essence",22400],
+        ["1.5 dCi 110ch FAP EDC eco²","Diesel",25650],
+        ["1.5 dCi 110ch FAP eco²","Diesel",24250],
+        ["1.5 dCi 90ch FAP eco²","Diesel",22800],
+        ["1.5 dCi 110ch energy FAP eco²","Diesel",24750]
+    ],
+
+    dynamique:[
+        ["1.2 TCe 115ch Stop&Start energy eco²","Essence",23700],
+        ["1.5 dCi 110ch FAP EDC eco²","Diesel",26950],
+        ["1.5 dCi 110ch FAP eco²","Diesel",25350],
+        ["1.5 dCi 110ch energy FAP eco²","Diesel",26050],
+        ["1.6 dCi 130ch energy FAP eco²","Diesel",26950]
+    ],
+
+    bose:[
+        ["1.5 dCi 110ch FAP EDC eco²","Diesel",28450],
+        ["1.5 dCi 110ch FAP eco²","Diesel",26850],
+        ["1.5 dCi 110ch energy FAP eco²","Diesel",27250],
+        ["1.6 dCi 130ch energy FAP eco²","Diesel",28450]
+    ],
+
+    evolution:[
+        ["1.3 TCe 140ch","Essence",28800],
+        ["1.6 E-Tech Plug-in hybrid 160ch","Essence hybride rechargeable",38750],
+        ["1.5 Blue dCi 115","Diesel",30800],
+        ["1.5 Blue dCi 115 EDC","Diesel",32800]
+    ],
+
+    techno:[
+        ["1.3 TCe 140ch","Essence",30750],
+        ["1.3 TCe 140ch EDC","Essence",32750],
+        ["1.6 E-Tech Plug-in hybrid 160ch","Essence hybride rechargeable",40700],
+        ["1.5 Blue dCi 115","Diesel",32750],
+        ["1.5 Blue dCi 115 EDC","Diesel",34750]
+    ],
+
+    rsline:[
+        ["1.3 TCe 140ch EDC","Essence",35050]
+    ],
+
+    rs:[
+        ["1.8 T 300ch EDC","Essence",44000]
+    ],
+
+    rstrophy:[
+        ["1.8 T 300ch EDC","Essence",49000]
+    ],
+
+    // Mégane V
+    techno5:[
+        ["220 ch Autonomie Confort","Électrique",32670]
+    ],
+    esprit_alpine:[
+        ["220 ch Autonomie Confort","Électrique",35670]
+    ]
+};
+
+// Mégane IV phase 2 (2021) : motorisations provisoires (reprises des finitions équivalentes, à remplacer par les vraies)
+engines.zen21=engines.evolution;
+engines.limited21=engines.evolution;
+engines.intens21=engines.techno;
+engines.rsline21=engines.rsline;
+
+const trimNames={
+    authentique:"Authentique",
+    expression:"Expression",
+    dynamique:"Dynamique",
+    bose:"Bose",
+    evolution:"Evolution",
+    techno:"Techno",
+    rsline:"RS Line",
+    rs:"RS",
+    rstrophy:"RS Trophy",
+    techno5:"Techno",
+    esprit_alpine:"Esprit Alpine",
+    zen21:"Zen",
+    limited21:"Série Limité Limited (Zen+)",
+    intens21:"Intens (Zen+)",
+    rsline21:"R.S. Line (Intens+)"
+};
+
+
+/* =========================================================
+   COULEURS
+========================================================= */
+
+const megane3Colors=[
+    ["Blanc Glacier","#eeeeee",0,"série"],
+    ["Beige Cendré","#d4c5b3",570,"option"],
+    ["Blanc Nacré","#f5f5f2",720,"option"],
+    ["Bleu Majorelle","#1c4e80",600,"option"],
+    ["Bleu Malte","#004080",720,"option"],
+    ["Gris Cassiopée","#4a5056",600,"option"],
+    ["Gris Eclipse","#33373b",600,"option"],
+    ["Gris Platine","#a8adad",620,"option"],
+    ["Marron Glacé","#4a3b32",620,"option"],
+    ["Noir Étoilé","#111111",620,"option"],
+    ["Rouge Dyna","#990000",620,"option"]
+];
+
+const normalColors=[
+    ["Blanc Glacier","#eeeeee",0,"série"],
+    ["Blanc Nacré","#f5f5f2",850,"série"],
+    ["Bleu Iron","#304b67",750,"série"],
+    ["Gris Highland","#777777",650,"série","gris_island"],
+    ["Gris Titanium","#555555",650,"série"],
+    ["Noir Étoilé","#111111",650,"série"],
+    ["Rouge Flamme","#8b2020",850,"série"]
+];
+
+const rsColors=[
+    ["Blanc Glacier","#eeeeee",0,"série"],
+    ["Blanc Nacré","#f5f5f2",850,"série"],
+    ["Gris Highland","#777777",650,"série"],
+    ["Gris Titanium","#555555",650,"série"],
+    ["Jaune Sirius","#d6b500",1600,"série"],
+    ["Noir Étoilé","#111111",650,"série"],
+    ["Orange Tonic","#e66f17",1600,"série"],
+    ["Rouge Flamme","#8c2020",850,"série"]
+];
+
+const megane4b2021Colors=[
+    ["Blanc Glacier","#eeeeee",0,"série"],
+    ["Blanc Nacré","#f5f5f2",850,"série"],
+    ["Bleu Iron","#304b67",650,"série"],
+    ["Bleu Cosmos","#1f3b73",650,"série"],
+    ["Cuivre Solar","#a8643a",650,"série"],
+    ["Rouge Flamme","#8b2020",850,"série"],
+    ["Gris Highland","#777777",650,"série"],
+    ["Gris Baltique","#5d646c",650,"série"],
+    ["Gris Titanium","#555555",650,"série"],
+    ["Noir Étoilé","#111111",650,"série"]
+];
+
+const megane5TechnoColors=[
+    ["Rouge Flamme","#8b2020",0,"Peinture métallisée"],
+    ["Blanc Glacier","#eeeeee",250,"Peinture métallisée"],
+    ["Rouge Flamme / Toit Noir Étoilé","#8b2020",600,"Peinture métallisée"],
+    ["Blanc Glacier / Toit Gris Schiste","#eeeeee",800,"Peinture métallisée"],
+    ["Blanc Glacier / Toit Noir Étoilé","#eeeeee",800,"Peinture métallisée"],
+    ["Bleu Nocturne","#1e2a3a",900,"Peinture métallisée"],
+    ["Gris Schiste","#6b7075",900,"Peinture métallisée"],
+    ["Noir Étoilé","#111111",900,"Peinture métallisée"],
+    ["Bleu Nocturne / Toit Gris Schiste","#1e2a3a",1400,"Peinture métallisée"],
+    ["Noir Étoilé / Toit Gris Schiste","#111111",1400,"Peinture métallisée"],
+    ["Bleu Nocturne / Toit Noir Étoilé","#1e2a3a",1400,"Peinture métallisée"],
+    ["Gris Schiste / Toit Noir Étoilé","#6b7075",1400,"Peinture métallisée"],
+    ["Bleu Ardoise Satin / Toit Noir Étoilé","#4a586e",2200,"Peinture satinée"],
+    ["Gris Schiste Satin / Toit Noir Étoilé","#5e6368",2200,"Peinture satinée"]
+];
+
+const megane5AlpineColors=[
+    ["Rouge Flamme","#8b2020",0,"Peinture métallisée"],
+    ["Rouge Flamme / Toit Noir Étoilé","#8b2020",600,"Peinture métallisée"],
+    ["Bleu Nocturne","#1e2a3a",900,"Peinture métallisée"],
+    ["Gris Schiste","#6b7075",900,"Peinture métallisée"],
+    ["Noir Étoilé","#111111",900,"Peinture métallisée"],
+    ["Noir Étoilé / Toit Gris Schiste","#111111",1400,"Peinture métallisée"],
+    ["Bleu Nocturne / Toit Noir Étoilé","#1e2a3a",1400,"Peinture métallisée"],
+    ["Gris Schiste / Toit Noir Étoilé","#6b7075",1400,"Peinture métallisée"],
+    ["Bleu Ardoise Satin / Toit Noir Étoilé","#4a586e",2200,"Peinture satinée"],
+    ["Gris Schiste Satin / Toit Noir Étoilé","#5e6368",2200,"Peinture satinée"]
+];
+
+
+let config={
+    generation:"megane4",
+    body:"berline",
+    trim:"evolution",
+    engine:0,
+    color:0,
+    upholstery:0,
+    wheel:0,
+    options:[],
+    accessories:[],
+    collapsed:{},
+    currentView:"front"
+};
+
+
+function euro(value){
+    return new Intl.NumberFormat("fr-FR",{
+        style:"currency",
+        currency:"EUR",
+        maximumFractionDigits:0
+    }).format(value);
+}
+
+// Mégane IV phase 2 : (2023) ou (2021)
+function isM4(){
+    return config.generation==="megane4" || config.generation==="megane4b";
+}
+
+function includedLabel(){
+    return config.generation==="megane4b" ? "Inclus de série" : "Inclus";
+}
+
+
+function currentEngine(){
+    if(engines[config.trim] && engines[config.trim][config.engine]){
+        return engines[config.trim][config.engine];
+    }
+    return null;
+}
+
+
+function isHybrid(){
+    const eng = currentEngine();
+    return eng ? eng[1].includes("hybride") : false;
+}
+
+
+function isDiesel(){
+    const eng = currentEngine();
+    return eng ? eng[1]==="Diesel" : false;
+}
+
+
+function isRS(){
+    if(config.generation!=="megane4") return false;
+    return config.trim==="rs" || config.trim==="rstrophy";
+}
+
+
+/* =========================================================
+   GÉNÉRATION
+========================================================= */
+
+function renderGenerations(){
+    const c=document.getElementById("generationChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    Object.keys(generations).forEach(genKey=>{
+        const b=document.createElement("button");
+        b.className="choice "+(config.generation===genKey?"active":"");
+        b.innerHTML=`<strong>${generations[genKey]}</strong>`;
+
+        b.onclick=()=>{
+            config.generation=genKey;
+            if(genKey==="megane3"){
+                config.trim="authentique";
+                config.body="berline";
+            } else if(genKey==="megane5"){
+                config.trim="techno5";
+                config.body="berline";
+            } else if(genKey==="megane4b"){
+                config.trim="zen21";
+                config.body="berline";
+            } else {
+                config.trim="evolution";
+                config.body="berline";
+            }
+            config.engine=0;
+            config.options=[];
+            config.accessories=[];
+            config.wheel=0;
+            config.upholstery=0;
+            config.color=0;
+
+            render();
+        };
+
+        c.appendChild(b);
+    });
+}
+
+
+/* =========================================================
+   MOTORISATIONS DISPONIBLES (MEGANE 4)
+========================================================= */
+
+function getAvailableFuelTypes(){
+    if(!isM4()) return [];
+    const fuels=[];
+    engines[config.trim].forEach(engine=>{
+        let type=engine[1];
+        if(type.includes("hybride")){
+            type="Hybride";
+        }else if(type==="Diesel"){
+            type="Diesel";
+        }else{
+            type="Essence";
+        }
+        if(!fuels.includes(type)){
+            fuels.push(type);
+        }
+    });
+    return fuels;
+}
+
+function renderAvailableFuels(){
+    const c=document.getElementById("availableFuelBox");
+    if(!c) return;
+
+    if(!isM4()){
+        c.innerHTML="";
+        return;
+    }
+
+    const fuels=getAvailableFuelTypes();
+    c.innerHTML=`
+        <div class="available-fuels">
+            <div class="available-fuels-title">Motorisations disponibles</div>
+            <div class="fuel-list">
+                ${fuels.map(fuel=>`<span class="fuel">${fuel}</span>`).join("")}
+            </div>
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   CARROSSERIE
+========================================================= */
+
+function renderBodies(){
+    const c=document.getElementById("bodyChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    if(!isM4()){
+        c.innerHTML='<span class="empty-section-msg">Aucune carrosserie disponible pour ce modèle.</span>';
+        return;
+    }
+
+    ["berline","estate"].forEach(body=>{
+        const b=document.createElement("button");
+        b.className="choice "+(config.body===body?"active":"");
+        b.innerHTML=`
+            <strong>Mégane ${body==="berline"?"Berline":"Estate"}</strong>
+            <span>${body==="estate"?"+ 1 000 €":"Carrosserie berline"}</span>
+        `;
+
+        b.onclick=()=>{
+            config.body=body;
+            if(body==="estate" && (config.trim==="rs" || config.trim==="rstrophy")){
+                config.trim="evolution";
+                config.engine=0;
+            }
+            render();
+        };
+
+        c.appendChild(b);
+    });
+}
+
+
+/* =========================================================
+   FINITIONS
+========================================================= */
+
+function renderTrims(){
+    const c=document.getElementById("trimChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    let availableTrims = [];
+    if(config.generation==="megane3"){
+        availableTrims = ["authentique","expression","dynamique","bose"];
+    } else if(config.generation==="megane4"){
+        availableTrims = ["evolution","techno","rsline","rs","rstrophy"];
+    } else if(config.generation==="megane4b"){
+        availableTrims = ["zen21","limited21","intens21","rsline21"];
+    } else if(config.generation==="megane5"){
+        availableTrims = ["techno5","esprit_alpine"];
+    }
+
+    availableTrims.forEach(trim=>{
+        if(config.body==="estate" && (trim==="rs" || trim==="rstrophy")) return;
+
+        const b=document.createElement("button");
+        b.className="choice "+(config.trim===trim?"active":"");
+        b.innerHTML=`<strong>${trimNames[trim]}</strong>`;
+
+        b.onclick=()=>{
+            config.trim=trim;
+            config.engine=0;
+            config.options=[];
+            config.wheel=0;
+            config.upholstery=0;
+            config.color=0;
+            render();
+        };
+
+        c.appendChild(b);
+    });
+}
+
+
+/* =========================================================
+   MOTORISATIONS
+========================================================= */
+
+function renderEngines(){
+    const c=document.getElementById("engineChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    if(!engines[config.trim]){
+        c.innerHTML='<span class="empty-section-msg">Aucune motorisation disponible pour ce modèle.</span>';
+        return;
+    }
+
+    engines[config.trim].forEach((engine,index)=>{
+        const d=document.createElement("div");
+        d.className="engine "+(config.engine===index?"active":"");
+
+        let price=engine[2];
+        if(isM4() && config.body==="estate"){
+            price+=1000;
+        }
+
+        d.innerHTML=`
+            <div>
+                <strong>${engine[0]}</strong>
+                <small>${engine[1]}</small>
+            </div>
+            <div class="engine-price">
+                ${euro(price)}
+            </div>
+        `;
+
+        d.onclick=()=>{
+            config.engine=index;
+            config.options=[];
+            render();
+        };
+
+        c.appendChild(d);
+    });
+}
+
+
+/* =========================================================
+   COULEURS
+========================================================= */
+
+function getColorsList(){
+    if(config.generation==="megane3"){
+        let list = megane3Colors.filter(c=>c[0]!=="Bleu Malte");
+        if(config.trim==="dynamique"){
+            if(config.options.includes("pack_gt_line")){
+                list = megane3Colors.filter(c=>c[0]!=="Beige Cendré" && c[0]!=="Bleu Majorelle" && c[0]!=="Gris Cassiopée");
+            } else {
+                list = megane3Colors.filter(c=>c[0]!=="Bleu Malte");
+            }
+        }
+        return list;
+    }
+    if(config.generation==="megane4"){
+        return isRS() ? rsColors : normalColors;
+    }
+    if(config.generation==="megane4b"){
+        if(config.trim==="rsline21"){
+            return megane4b2021Colors.filter(c=>c[0]!=="Bleu Cosmos" && c[0]!=="Cuivre Solar");
+        }
+        return megane4b2021Colors;
+    }
+    if(config.generation==="megane5"){
+        return config.trim==="esprit_alpine" ? megane5AlpineColors : megane5TechnoColors;
+    }
+    return [];
+}
+
+function renderColors(){
+    const c=document.getElementById("colorChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    const colors=getColorsList();
+    if(config.color>=colors.length){
+        config.color=0;
+    }
+
+    if(config.generation==="megane5"){
+        const groups={};
+        colors.forEach((col,idx)=>{
+            const grp = col[3] || "Couleurs";
+            if(!groups[grp]) groups[grp]=[];
+            groups[grp].push({color:col, index:idx});
+        });
+
+        Object.keys(groups).forEach(grpName=>{
+            const grpDiv = document.createElement("div");
+            grpDiv.className="color-group-title";
+            grpDiv.textContent=grpName;
+            c.appendChild(grpDiv);
+
+            const colorsSub = document.createElement("div");
+            colorsSub.className="colors";
+
+            groups[grpName].forEach(item=>{
+                const b=createColorButton(item.color, item.index);
+                colorsSub.appendChild(b);
+            });
+
+            c.appendChild(colorsSub);
+        });
+    } else {
+        const colorsSub = document.createElement("div");
+        colorsSub.className="colors";
+
+        colors.forEach((color,index)=>{
+            const b=createColorButton(color, index);
+            colorsSub.appendChild(b);
+        });
+
+        c.appendChild(colorsSub);
+    }
+}
+
+function createColorButton(color, index){
+    const b=document.createElement("button");
+    b.className="color "+(config.color===index?"active":"");
+    b.innerHTML=`
+        <div class="color-round">
+            <div class="color-round-inner" style="background:${color[1]}"></div>
+        </div>
+        <div class="color-info">
+            <span class="color-name">${color[0]}</span>
+            <span class="color-price">${color[2]>0?"+ "+euro(color[2]):includedLabel()}</span>
+        </div>
+    `;
+    b.onclick=()=>{
+        config.color=index;
+        render();
+    };
+    return b;
+}
+
+
+/* =========================================================
+   SELLERIE
+========================================================= */
+
+function getUpholsteries(){
+    if(config.generation==="megane3"){
+        if(config.trim==="authentique"){
+            return [["Sellerie Papeete carbone foncé","upholstery_m3_authentique.jpg",0]];
+        }
+        if(config.trim==="expression"){
+            return [["Sellerie Java/Santiago carbone foncé","upholstery_m3_expression.jpg",0]];
+        }
+        if(config.trim==="dynamique"){
+            if(config.options.includes("pack_gt_line")){
+                return [["Sellerie mixte TEP/tissu spécifique","upholstery_m3_gtline.jpg",0]];
+            }
+            return [["Sellerie Java, cravate carbone foncé","upholstery_m3_dynamique.jpg",0]];
+        }
+        if(config.trim==="bose"){
+            return [
+                ["Sellerie tissu/TEP carbone foncé","upholstery_m3_bose.jpg",0],
+                ["Sièges cuir carbone/alcantara gris clair","upholstery_m3_cuir.jpg",1500]
+            ];
+        }
+    }
+
+    if(config.generation==="megane4b"){
+        if(config.trim==="zen21"){
+            return[["Sellerie tissu Carbone foncé","upholstery_zen21.jpg",0]];
+        }
+        if(config.trim==="limited21"){
+            return[["Sellerie tissu SL Limited","upholstery_limited21.jpg",0]];
+        }
+        if(config.trim==="intens21"){
+            return[
+                ["Sellerie mixte similicuir / tissu Carbone texturé","upholstery_techno.jpg",0],
+                ["Sellerie cuir perforé Noir Titane","upholstery_cuir_noir_titane.jpg",1800]
+            ];
+        }
+        if(config.trim==="rsline21"){
+            return[["Sellerie Alcantara Gris Foncé avec surpiqûres rouges R.S. line","upholstery_rsline.jpg",0]];
+        }
+    }
+
+    if(config.generation==="megane4"){
+        if(config.trim==="rstrophy"){
+            return[
+                ["Sellerie en Alcantara® avec surpiqûres Rouge","upholstery_rs_trophy.jpg",0],
+                ["Sellerie Recaro® en Alcantara","recaro.jpg",1900]
+            ];
+        }
+        if(config.trim==="rs"){
+            return[
+                ["Sellerie tissu avec surpiqûres Gris argent et Rouge","upholstery_rs.jpg",0],
+                ["Sellerie en Alcantara® avec surpiqûres Rouge","alcantara.jpg",1500]
+            ];
+        }
+        if(config.trim==="rsline"){
+            return[
+                ["Sellerie Alcantara Gris Foncé avec surpiqûres rouges R.S. Line","upholstery_rsline.jpg",0]
+            ];
+        }
+        if(config.trim==="techno"){
+            return[
+                ["Sellerie mixte similicuir / tissu Carbone texturé","upholstery_techno.jpg",0]
+            ];
+        }
+        return[
+            ["Sellerie tissu Carbone","upholstery_evolution.jpg",0]
+        ];
+    }
+
+    if(config.generation==="megane5"){
+        if(config.trim==="techno5"){
+            return[
+                ["Sellerie tissu recyclé gris chiné / textile enduit grainé (TEP noir titan)","upholstery_m5_1.jpg",0],
+                ["Sellerie textile grainé (TEP gris clair biosourcé)","upholstery_m5_2.jpg",0],
+                ["Sellerie textile enduit grainé (TEP noir titan biosourcé)","upholstery_m5_3.jpg",0]
+            ];
+        }
+        if(config.trim==="esprit_alpine"){
+            return[
+                ["Sellerie maille recyclée Noir Titane embossée / textile enduit grainé (TEP) matelassé recyclé","upholstery_m5_alpine.jpg",0]
+            ];
+        }
+    }
+
+    return [];
+}
+
+
+function renderUpholstery(){
+    const c=document.getElementById("upholsteryChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    const items=getUpholsteries();
+    if(config.upholstery>=items.length){
+        config.upholstery=0;
+    }
+
+    items.forEach((item,index)=>{
+        const b=document.createElement("button");
+        b.className="upholstery "+(config.upholstery===index?"active":"");
+        b.innerHTML=`
+            <div class="upholstery-round">
+                <img src="${item[1]}" alt="${item[0]}" onerror="imageError(this,'${item[1]}')">
+            </div>
+            <div class="upholstery-info">
+                <span class="upholstery-name">${item[0]}</span>
+                <span class="upholstery-price">${item[2]>0?"+ "+euro(item[2]):includedLabel()}</span>
+            </div>
+        `;
+
+        b.onclick=()=>{
+            config.upholstery=index;
+
+            // Liaisons spécifiques M3 Bose
+            if(config.generation==="megane3" && config.trim==="bose"){
+                if(index===1){
+                    if(!config.options.includes("pack_cuir")) config.options.push("pack_cuir");
+                } else {
+                    config.options=config.options.filter(id=>id!=="pack_cuir");
+                }
+            }
+
+            // Liaisons spécifiques M4 (2021) Intens
+            if(config.generation==="megane4b" && config.trim==="intens21"){
+                if(index===1){
+                    if(!config.options.includes("pack_cuir21")) config.options.push("pack_cuir21");
+                } else {
+                    config.options=config.options.filter(id=>id!=="pack_cuir21");
+                }
+            }
+
+            // Liaisons spécifiques M4
+            if(config.generation==="megane4"){
+                if(config.trim==="rs"){
+                    if(index===1){
+                        if(!config.options.includes("alcantara")) config.options.push("alcantara");
+                    }else{
+                        config.options=config.options.filter(id=>id!=="alcantara");
+                    }
+                }
+                if(config.trim==="rstrophy"){
+                    if(index===1){
+                        if(!config.options.includes("recaro")) config.options.push("recaro");
+                    }else{
+                        config.options=config.options.filter(id=>id!=="recaro");
+                    }
+                }
+            }
+
+            // Liaisons spécifiques M5
+            if(config.generation==="megane5" && config.trim==="techno5"){
+                if(index===1){
+                    if(!config.options.includes("pack_confort_gris")) config.options.push("pack_confort_gris");
+                    config.options=config.options.filter(id=>id!=="pack_confort_noir");
+                } else if(index===2){
+                    if(!config.options.includes("pack_confort_noir")) config.options.push("pack_confort_noir");
+                    config.options=config.options.filter(id=>id!=="pack_confort_gris");
+                } else {
+                    config.options=config.options.filter(id=>id!=="pack_confort_gris" && id!=="pack_confort_noir");
+                }
+            }
+
+            render();
+        };
+
+        c.appendChild(b);
+    });
+}
+
+
+/* =========================================================
+   JANTES
+========================================================= */
+
+function getWheels(){
+    if(config.generation==="megane3"){
+        if(config.trim==="authentique"){
+            return [["Jante 15'' avec enjoliveur Kubera","wheel_kubera.jpg",0]];
+        }
+        if(config.trim==="expression"){
+            if(config.options.includes("pack_look")){
+                return [["Jantes alliage 16'' Kaleido","wheel_kaleido.jpg",0]];
+            }
+            return [["Jante design 16'' Surround","wheel_surround.jpg",0]];
+        }
+        if(config.trim==="dynamique"){
+            return [
+                ["Jante alliage 17'' Plenum","wheel_plenum.jpg",0],
+                ["Jantes alliage 16'' Kaleido","wheel_kaleido.jpg",0]
+            ];
+        }
+        if(config.trim==="bose"){
+            return [
+                ["Jantes alliage 17'' Sari diamantée","wheel_sari.jpg",0],
+                ["Jante alliage 17'' Plenum","wheel_plenum.jpg",0],
+                ["Jantes alliage 16'' Eptius","wheel_eptius.jpg",0]
+            ];
+        }
+    }
+
+    if(config.generation==="megane4b"){
+        if(config.trim==="zen21"){
+            return[["Jante 16” avec enjoliveur Elliptik","elliptik.jpg",0]];
+        }
+        if(config.trim==="limited21"){
+            return[["Jante alliage 16” Limited","limited.jpg",0]];
+        }
+        if(config.trim==="intens21"){
+            return[
+                ["Jante alliage Impulse 16”","impulse.jpg",0],
+                ["Jante alliage Allium 17”","jantes_techno.jpg",500],
+                ["Jante alliage Hightek 18”","hightek.jpg",700]
+            ];
+        }
+        if(config.trim==="rsline21"){
+            return[
+                ["Jante Montlhéry 17”","montlhery.jpg",0],
+                ["Jante Magny-Cours 18”","magny_cours.jpg",500]
+            ];
+        }
+    }
+
+    if(config.generation==="megane4"){
+        if(config.trim==="evolution"){
+            if(config.options.includes("allweather")){
+                return[["Jante 16’’ avec enjoliveurs Elliptik","elliptik.jpg",0]];
+            }
+            return[["Jante alliage 16’’ Impulse","impulse.jpg",0]];
+        }
+        if(config.trim==="techno"){
+            return[
+                ["Jante alliage 17’’ Allium","jantes_techno.jpg",0],
+                ["Jante alliage 18’’ Hightek","hightek.jpg",700]
+            ];
+        }
+        if(config.trim==="rsline"){
+            return[
+                ["Jante 17’’ Montlhéry","montlhery.jpg",0],
+                ["Jante 18’’ Magny-Cours","magny_cours.jpg",500]
+            ];
+        }
+        if(config.trim==="rs"){
+            return[
+                ["Jante alliage 18’’ Estoril Gun Métal Grey","jantes_rs.jpg",0],
+                ["Jante alliage 19’’ Interlagos Full Black","interlagos.jpg",1000]
+            ];
+        }
+        return[
+            ["Jante alliage 19’’ Triple ton Jerez","jantes_rs_trophy.jpg",0],
+            ["Jante alliage 19’’ R.S. Trophy Fuji Light","fuji_light.jpg",2000]
+        ];
+    }
+
+    if(config.generation==="megane5"){
+        if(config.trim==="techno5"){
+            return[
+                ["Jantes alliage diamanté noir brillant 19\" Stream","wheel_stream.jpg",0],
+                ["Jantes alliage diamanté noir brillant 20\" Synergy","wheel_synergy.jpg",0]
+            ];
+        }
+        if(config.trim==="esprit_alpine"){
+            return[
+                ["Jantes alliage diamantées noir, vernis fumé 20\" Speedway","wheel_speedway.jpg",0]
+            ];
+        }
+    }
+
+    return [];
+}
+
+
+function renderWheels(){
+    const c=document.getElementById("wheelChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    const wheels=getWheels();
+    if(config.wheel>=wheels.length){
+        config.wheel=0;
+    }
+
+    wheels.forEach((wheel,index)=>{
+        const b=document.createElement("button");
+        b.className="wheel "+(config.wheel===index?"active":"");
+        b.innerHTML=`
+            <div class="wheel-round">
+                <img src="${wheel[1]}" alt="${wheel[0]}" onerror="imageError(this,'${wheel[1]}')">
+            </div>
+            <div class="wheel-info">
+                <span class="wheel-name">${wheel[0]}</span>
+                <span class="wheel-price">${wheel[2]>0?"+ "+euro(wheel[2]):includedLabel()}</span>
+            </div>
+        `;
+
+        b.onclick=()=>{
+            config.wheel=index;
+
+            if(config.generation==="megane5" && config.trim==="techno5"){
+                if(index===1){
+                    if(!config.options.includes("jantes_synergy")) config.options.push("jantes_synergy");
+                } else {
+                    config.options=config.options.filter(id=>id!=="jantes_synergy");
+                }
+            }
+
+            render();
+        };
+
+        c.appendChild(b);
+    });
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+function getOptions(){
+    const options=[];
+
+    function add(id,name,price,image,description="",available=true,category="Autres"){
+        if(available){
+            options.push({id,name,price,image,description,category});
+        }
+    }
+
+    if(config.generation==="megane3"){
+        const hasTomTom = config.options.includes("tomtom_live");
+
+        if(config.trim==="authentique"){
+            add("tomtom_live","Carminat TomTom Live",490,"tomtom_live.jpg","",true,"Audio - Télécommunications");
+            add("carte_europe","Cartographie Europe",120,"carte_europe.jpg","Indisponible sans Carminat TomTom Live",hasTomTom,"Audio - Télécommunications");
+            add("esc","ESC, ASR, Contrôle de sous virage",300,"esc.jpg","",true,"Sécurité");
+            add("spare_m3","Roue de secours",120,"roue_secours.jpg","",true,"Sécurité");
+        }
+
+        if(config.trim==="expression"){
+            add("tomtom_live","Carminat TomTom Live",490,"tomtom_live.jpg","",true,"Audio - Télécommunications");
+            add("carte_europe","Cartographie Europe",120,"carte_europe.jpg","Indisponible sans Carminat TomTom Live",hasTomTom,"Audio - Télécommunications");
+            add("pack_city","Pack City",500,"pack_city.jpg","",true,"Extérieur");
+            add("pack_look","Pack Look",500,"pack_look.jpg","Inclus jantes alliage 16'' Kaleido",true,"Extérieur");
+            add("elec_windows","Lève-vitres Av./Ar. électriques",150,"elec_windows.jpg","",true,"Intérieur");
+            add("esc","ESC, ASR, Contrôle de sous virage",300,"esc.jpg","",true,"Sécurité");
+            add("spare_m3","Roue de secours",120,"roue_secours.jpg","",true,"Sécurité");
+        }
+
+        if(config.trim==="dynamique"){
+            add("tomtom_live","Carminat TomTom Live",490,"tomtom_live.jpg","",true,"Audio - Télécommunications");
+            add("carte_europe","Cartographie Europe",120,"carte_europe.jpg","Indisponible sans Carminat TomTom Live",hasTomTom,"Audio - Télécommunications");
+            add("bose_sound","R-Plug&Radio+ Bose Sound System",600,"bose_sound.jpg","",true,"Audio - Télécommunications");
+            add("pack_gt_line","Pack GT Line",1000,"pack_gtline.jpg","Inclus la sellerie mixte TEP",true,"Extérieur");
+            add("pack_city_2","Pack City 2",500,"pack_city2.jpg","",true,"Extérieur");
+            add("pack_premium","Pack Premium",1000,"pack_premium.jpg","",true,"Extérieur");
+            add("spare_m3","Roue de secours",120,"roue_secours.jpg","",true,"Sécurité");
+        }
+
+        if(config.trim==="bose"){
+            add("carte_europe","Cartographie Europe",120,"carte_europe.jpg","",true,"Audio - Télécommunications");
+            add("pack_xenon","Pack Xénon",900,"pack_xenon.jpg","",true,"Extérieur");
+            add("sunroof_panoramic","Toit ouvrant panoramique",900,"toit_panoramique.jpg","",true,"Extérieur");
+            add("pack_hitech","Pack Hi-Tech",800,"pack_hitech.jpg","",true,"Extérieur");
+            add("pack_cuir","Pack cuir",1500,"pack_cuir.jpg","Inclus sièges cuir carbone/alcantara gris clair",true,"Intérieur");
+            add("spare_m3","Roue de secours",120,"roue_secours.jpg","",true,"Sécurité");
+        }
+    }
+
+    if(config.generation==="megane4b"){
+        if(config.trim==="zen21"){
+            add("spare","Roue de secours",200,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("pack_techno21","Pack Techno",1200,"pack_techno.jpg","",true,"Multimédia");
+        }
+
+        if(config.trim==="limited21"){
+            add("spare","Roue de secours",200,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("galette","Roue de secours galette",150,"galette.jpg","Diesel uniquement",isDiesel(),"Confort");
+            add("pack_city21","Pack City : Caméra de recul et projecteurs anti-brouillard",400,"pack_city21.jpg","",true,"Conduite et sécurité");
+            add("wallbox","Câble de recharge Wallbox",300,"wallbox.jpg","Hybride uniquement",isHybrid(),"Multimédia");
+        }
+
+        if(config.trim==="intens21"){
+            add("hud","Affichage tête haute",400,"affichage_tete_haute.jpg","",true,"Conduite et sécurité");
+            add("lane_assist","Assistant de maintien dans la voie",150,"lane_assist.jpg","",true,"Conduite et sécurité");
+            add("bose","Bose® Sound System",700,"bose.jpg","",true,"Multimédia");
+            add("easypark_assist","Easy Park Assist",350,"easy_park_assist.jpg","Sauf hybride",!isHybrid(),"Conduite et sécurité");
+            add("spare","Roue de secours",200,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("galette","Roue de secours galette",150,"galette.jpg","Diesel uniquement",isDiesel(),"Confort");
+            add("sunroof21","Toit ouvrant électrique panoramique",900,"toit_ouvrant.jpg","",true,"Confort");
+            add("pack_conduite","Pack Conduite",400,"pack_conduite.jpg","",true,"Conduite et sécurité");
+            add("pack_cuir21","Pack Cuir",1800,"pack_cuir.jpg","Va de pair avec la sellerie cuir perforé Noir Titane",true,"Confort");
+            add("pack_easydrive21","Pack easy drive",1150,"easy_drive.jpg","",true,"Conduite et sécurité");
+            add("pack_easypark21","Pack easy park",550,"easy_park.jpg","",true,"Conduite et sécurité");
+            add("pack_hiver21","Pack hiver",400,"winter_pack.jpg","",true,"Confort");
+            add("wallbox","Câble de recharge Wallbox",400,"wallbox.jpg","Hybride uniquement",isHybrid(),"Multimédia");
+        }
+
+        if(config.trim==="rsline21"){
+            add("hud","Affichage tête haute",400,"affichage_tete_haute.jpg","",true,"Conduite et sécurité");
+            add("becquet_rs","Becquet arrière R.S.",300,"becquet_rs.jpg","",true,"Autres");
+            add("bose","Bose® Sound System",700,"bose.jpg","",true,"Multimédia");
+            add("spare","Roue de secours",200,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("galette","Roue de secours galette",150,"galette.jpg","Diesel uniquement",isDiesel(),"Confort");
+            add("sunroof21","Toit ouvrant électrique panoramique",900,"toit_ouvrant.jpg","",true,"Confort");
+            add("pack_conduite","Pack Conduite",400,"pack_conduite.jpg","",true,"Conduite et sécurité");
+            add("pack_easydrive21","Pack easy drive",1150,"easy_drive.jpg","",true,"Conduite et sécurité");
+            add("pack_easypark21","Pack easy park",550,"easy_park.jpg","",true,"Conduite et sécurité");
+            add("pack_hiver21","Pack hiver",400,"winter_pack.jpg","",true,"Confort");
+            add("wallbox","Câble de recharge Wallbox",400,"wallbox.jpg","Hybride uniquement",isHybrid(),"Multimédia");
+        }
+    }
+
+    if(config.generation==="megane4"){
+        if(config.trim==="evolution"){
+            add("spare","Roue de secours",config.body==="estate"?150:200,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("galette","Roue de secours galette",150,"galette.jpg","Diesel uniquement",isDiesel(),"Confort");
+            add("allweather","Pneus tout temps",300,"pneus_tout_temps.jpg","Avec Jante 16’’ avec enjoliveurs Elliptik",true,"Confort");
+            add("camera","Caméra de recul",config.body==="estate"?350:250,"camera_recul.jpg","",true,"Conduite et sécurité");
+            add("safety","Safety Pack",650,"safety_pack.jpg","",true,"Conduite et sécurité");
+            add("dash42","Tableau de bord écran numérique 4,2\"+compteur analogique",-100,"tableau_42.jpg","Non disponible sur hybride",!isHybrid(),"Multimédia");
+            add("parking_brake","Frein de parking assisté",200,"frein_parking.jpg","",!isHybrid(),"Conduite et sécurité");
+            add("wallbox","Câble de recharge WALLBOX",300,"wallbox.jpg","Hybride uniquement",isHybrid(),"Multimédia");
+            add("modularity","Modularity Pack",350,"modularity_pack.jpg","",config.body==="estate"&&!isHybrid(),"Confort");
+        }
+
+        if(config.trim==="techno"){
+            add("hud","Affichage tête haute",400,"affichage_tete_haute.jpg","",true,"Conduite et sécurité");
+            add("sunroof","Toit Ouvrant elec",900,"toit_ouvrant.jpg","",true,"Confort");
+            add("dash10","Tableau de bord avec écran numérique 10’’",100,"tableau_10.jpg","",!isHybrid(),"Multimédia");
+            add("winter","Winter Pack",config.body==="estate"?450:400,"winter_pack.jpg","",true,"Confort");
+            add("easypark","Pack Easy Park",550,"easy_park.jpg","",true,"Conduite et sécurité");
+            add("wallbox","Câble de recharge WALLBOX",300,"wallbox.jpg","Hybride uniquement",isHybrid(),"Multimédia");
+            add("spare","Roue de secours",config.body==="estate"?150:200,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("galette","Roue de secours galette",150,"galette.jpg","Diesel uniquement",isDiesel(),"Confort");
+            add("modularity","Modularity Pack",150,"modularity_pack.jpg","",config.body==="estate"&&!isHybrid(),"Confort");
+        }
+
+        if(config.trim==="rsline"){
+            add("bose","Bose® Sound System",700,"bose.jpg","",true,"Multimédia");
+            add("hud","Affichage tête haute",400,"affichage_tete_haute.jpg","",true,"Conduite et sécurité");
+            add("easydrive","Pack Easy Drive E-Tech",config.body==="estate"?0:600,"easy_drive.jpg","",true,"Conduite et sécurité");
+            add("sunroof","Toit Ouvrant elec",900,"toit_ouvrant.jpg","",true,"Confort");
+            add("spareRS","Roue de secours",150,"roue_secours.jpg","Essence uniquement",!isHybrid()&&!isDiesel(),"Confort");
+            add("galetteRS","Roue de secours galette",150,"galette.jpg","Diesel uniquement",isDiesel(),"Confort");
+        }
+
+        if(config.trim==="rs"){
+            add("hud","Affichage tête haute",400,"affichage_tete_haute.jpg","",true,"Conduite et sécurité");
+            add("adaptive","Régulateur de vitesse adaptatif",300,"regulateur_adaptatif.jpg","",true,"Conduite et sécurité");
+            add("sunroof","Toit Ouvrant elec",900,"toit_ouvrant.jpg","",true,"Confort");
+            add("rsmonitor","RS Monitor",250,"rs_monitor.jpg","",true,"Multimédia");
+            add("alcantara","Pack Alcantara (volant+sellerie)",1500,"alcantara_option.jpg","",true,"Confort");
+        }
+
+        if(config.trim==="rstrophy"){
+            add("adaptive","Régulateur de vitesse adaptatif",300,"regulateur_adaptatif.jpg","",true,"Conduite et sécurité");
+            add("sunroof","Toit Ouvrant elec",900,"toit_ouvrant.jpg","",true,"Confort");
+            add("rsmonitor","RS Monitor",250,"rs_monitor.jpg","",true,"Multimédia");
+            add("recaro","Sièges baquet Recaro (Non chauffants)",1900,"recaro_option.jpg","",true,"Confort");
+        }
+    }
+
+    if(config.generation==="megane5"){
+        // Solutions de recharge (communes Techno5 & Esprit Alpine)
+        add("cable_domestique","Câble de recharge domestique (mode 2)",400,"cable_domestique.jpg","",true,"Solution de recharge");
+        add("pack_charge_ac22","Pack charge AC 22 kW",1600,"pack_charge_ac22.jpg","",true,"Solution de recharge");
+        add("v2l","Adaptateur power to object (charge bidirectionnelle V2L)",400,"v2l.jpg","",true,"Solution de recharge");
+        add("cable_borne_mode3","Câble pour borne de recharge (mode 3 type 2 triphasé) 22 kW / 6,5 m",100,"cable_borne_mode3.jpg","",true,"Solution de recharge");
+        add("forfait_prise","Forfait prise renforcée + installation (prix à partir de)",499,"forfait_prise.jpg","",true,"Solution de recharge");
+        add("forfait_borne","Forfait borne de recharge standard + installation (prix à partir de)",1199,"forfait_borne.jpg","",true,"Solution de recharge");
+        add("forfait_powerbox","Forfait borne powerbox bidirectionnelle + installation (prix à partir de)",1599,"forfait_powerbox.jpg","",true,"Solution de recharge");
+
+        if(config.trim==="techno5"){
+            add("jantes_synergy","Jantes alliage diamantées noir brillant 20\" Synergy",0,"wheel_synergy.jpg","",true,"Design");
+            add("harman_kardon","Système audio premium Harman Kardon",1000,"harman_kardon.jpg","",true,"Multimédia");
+            add("connect_5","Extension jusqu'à 5 ans du pack connectivité avancée",100,"connect_5.jpg","",true,"Multimédia");
+            add("connect_8","Extension jusqu'à 8 ans du pack connectivité avancée",200,"connect_8.jpg","",true,"Multimédia");
+            add("pack_hiver","Pack hiver",600,"pack_hiver.jpg","",true,"Vie à bord");
+            add("pack_confort_gris","Pack confort premium gris clair",1200,"pack_confort_gris.jpg","",true,"Vie à bord");
+            add("pack_confort_noir","Pack confort premium noir titan",1000,"pack_confort_noir.jpg","",true,"Vie à bord");
+            add("advanced_driving","Pack advanced driving assist and augmented vision",1500,"advanced_driving.jpg","",true,"Conduite");
+            add("pneus_tout_temps_m5","Pneus tout temps",350,"pneus_tout_temps.jpg","",true,"Sécurité");
+        }
+
+        if(config.trim==="esprit_alpine"){
+            add("connect_5","Extension jusqu'à 5 ans du pack connectivité avancée",100,"connect_5.jpg","",true,"Multimédia");
+            add("connect_8","Extension jusqu'à 8 ans du pack connectivité avancée",200,"connect_8.jpg","",true,"Multimédia");
+            add("pneus_tout_temps_m5","Pneus tout temps",350,"pneus_tout_temps.jpg","",true,"Sécurité");
+        }
+    }
+
+    return options;
+}
+
+
+/* =========================================================
+   ACCESSOIRES (MEGANE 5)
+========================================================= */
+
+function getAccessories(){
+    if(config.generation!=="megane5") return [];
+
+    return [
+        {id:"seuil_porte", name:"Seuil de porte Renault", price:100, image:"seuil_porte.jpg", description:"Prix avec pose", category:"Design et personnalisation"},
+        {id:"coque_retroviseur", name:"Coque de rétroviseur gris métal satin", price:135, image:"coque_retroviseur.jpg", description:"Prix avec pose", category:"Design et personnalisation"},
+        {id:"coque_carte_rouge", name:"Coque de carte main libre Renault rouge absolu", price:50, image:"coque_carte_rouge.jpg", description:"", category:"Design et personnalisation"},
+        {id:"coque_carte_gris", name:"Coque de carte main libre Renault gris schiste", price:50, image:"coque_carte_gris.jpg", description:"", category:"Design et personnalisation"},
+
+        {id:"coffre_toit", name:"Coffre de toit Renault noir 480 L", price:460, image:"coffre_toit.jpg", description:"", category:"Attelage et portage"},
+        {id:"barres_toit", name:"Barres de toit QuickFix", price:255, image:"barres_toit.jpg", description:"", category:"Attelage et portage"},
+        {id:"porte_skis", name:"Porte-skis 4 paires sur barres transversales", price:555, image:"porte_skis.jpg", description:"", category:"Attelage et portage"},
+
+        {id:"alarme", name:"Alarme périmétrique volumétrique avec anti-soulèvement", price:315, image:"alarme.jpg", description:"Prix avec pose", category:"Sécurité et sérénité"},
+
+        {id:"cintre_appuie_tete", name:"Cintre et système multifonction sur appuie-tête", price:90, image:"cintre_appuie_tete.jpg", description:"", category:"Confort et protection"},
+        {id:"double_plancher", name:"Double plancher pour rangement de câble", price:185, image:"double_plancher.jpg", description:"", category:"Confort et protection"},
+        {id:"protection_siege_auto", name:"Protection arrière pour siège auto", price:100, image:"protection_siege_auto.jpg", description:"", category:"Confort et protection"},
+        {id:"organisateur_avant", name:"Organisateur multifonction sur siège avant", price:100, image:"organisateur_avant.jpg", description:"", category:"Confort et protection"},
+        {id:"siege_animaux", name:"Siège auto Renault pour animaux jusqu'à 15 kg", price:85, image:"siege_animaux.jpg", description:"", category:"Confort et protection"},
+        {id:"laisse_animaux", name:"Laisse de sécurité pour animaux Renault", price:25, image:"laisse_animaux.jpg", description:"", category:"Confort et protection"},
+        {id:"tapis_premium", name:"Tapis de sol textile premium", price:110, image:"tapis_premium.jpg", description:"", category:"Confort et protection"},
+        {id:"tapis_alpine", name:"Tapis de sol textile esprit Alpine", price:120, image:"tapis_alpine.jpg", description:"", category:"Confort et protection"},
+        {id:"tapis_caoutchouc", name:"Tapis de sol caoutchouc à bord haut", price:80, image:"tapis_caoutchouc.jpg", description:"", category:"Confort et protection"},
+        {id:"tapis_coffre", name:"Tapis de coffre premium", price:100, image:"tapis_coffre.jpg", description:"", category:"Confort et protection"},
+        {id:"nespresso", name:"Machine à café nomade Nespresso", price:250, image:"nespresso.jpg", description:"", category:"Confort et protection"},
+        {id:"bac_coffre", name:"Bac de coffre réversible textile caoutchouc", price:80, image:"bac_coffre.jpg", description:"", category:"Confort et protection"},
+        {id:"rangement_25l", name:"Rangement pliable multifonction 25 L", price:60, image:"rangement_25l.jpg", description:"", category:"Confort et protection"},
+        {id:"grand_organisateur", name:"Grand organisateur fermé pour la console centrale", price:95, image:"grand_organisateur.jpg", description:"", category:"Confort et protection"},
+        {id:"vide_poche", name:"Petit vide-poche nomade", price:30, image:"vide_poche.jpg", description:"", category:"Confort et protection"}
+    ];
+}
+
+
+/* =========================================================
+   AFFICHAGE OPTIONS & ACCESSOIRES
+========================================================= */
+
+function renderOptions(){
+    const c=document.getElementById("optionChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    const options=getOptions();
+    let categories=[];
+
+    // Mégane IV (2021) : compteur + catégories repliables
+    const collapsible = config.generation==="megane4b";
+
+    if(collapsible){
+        const count=document.createElement("div");
+        count.className="options-count";
+        count.textContent=options.length+" équipement"+(options.length>1?"s":"")+" disponible"+(options.length>1?"s":"");
+        c.appendChild(count);
+    }
+
+    if(config.generation==="megane3"){
+        categories=["Audio - Télécommunications","Extérieur","Intérieur","Sécurité","Autres"];
+    } else if(isM4()){
+        categories=["Multimédia","Conduite et sécurité","Confort","Autres"];
+    } else if(config.generation==="megane5"){
+        categories=["Solution de recharge","Design","Multimédia","Vie à bord","Conduite","Sécurité","Autres"];
+    }
+
+    categories.forEach(category=>{
+        const items=options.filter(option=>option.category===category);
+        if(!items.length) return;
+
+        const categoryBox=document.createElement("div");
+        categoryBox.className="option-category";
+
+        const selectedCount=items.filter(option=>config.options.includes(option.id)).length;
+        const isCollapsed = collapsible && !!config.collapsed[category];
+
+        categoryBox.innerHTML=`
+            <div class="option-category-title ${collapsible?"collapsible":""}">
+                <span>${category}</span>
+                <span class="option-category-right">
+                    <span class="option-category-count ${selectedCount>0?"visible":""}">
+                        ${selectedCount}
+                    </span>
+                    ${collapsible?`<span class="option-arrow">${isCollapsed?"▸":"▾"}</span>`:""}
+                </span>
+            </div>
+            <div class="option-grid"></div>
+        `;
+
+        const grid=categoryBox.querySelector(".option-grid");
+
+        if(collapsible){
+            const titleEl=categoryBox.querySelector(".option-category-title");
+            const arrowEl=categoryBox.querySelector(".option-arrow");
+            grid.style.display=isCollapsed?"none":"";
+            titleEl.onclick=()=>{
+                config.collapsed[category]=!config.collapsed[category];
+                grid.style.display=config.collapsed[category]?"none":"";
+                arrowEl.textContent=config.collapsed[category]?"▸":"▾";
+            };
+        }
+
+        items.forEach(option=>{
+            const b=document.createElement("button");
+            b.className="option "+(config.options.includes(option.id)?"active":"");
+
+            b.innerHTML=`
+                <div class="option-img-container">
+                    <img src="${option.image}" alt="${option.name}" onerror="imageError(this,'${option.image}')">
+                </div>
+                <div class="option-content">
+                    <strong>${option.name}</strong>
+                    ${option.description?`<span class="option-description">${option.description}</span>`:""}
+                    <div class="option-bottom">
+                        <div class="option-check">
+                            <span>${config.options.includes(option.id)?"sélectionné":"sélectionner"}</span>
+                        </div>
+                        <span class="option-price">
+                            ${option.price<0?"− "+euro(-option.price):option.price===0?includedLabel():"+ "+euro(option.price)}
+                        </span>
+                    </div>
+                </div>
+            `;
+
+            b.onclick=()=>{
+                if(config.options.includes(option.id)){
+                    config.options=config.options.filter(id=>id!==option.id);
+
+                    // Désélection M3
+                    if(option.id==="tomtom_live"){
+                        config.options=config.options.filter(id=>id!=="carte_europe");
+                    }
+                    if(option.id==="pack_cuir" && config.trim==="bose") config.upholstery=0;
+
+                    // Désélection M4 (2021)
+                    if(option.id==="pack_cuir21" && config.trim==="intens21") config.upholstery=0;
+
+                    // Désélection M4
+                    if(option.id==="alcantara" && config.trim==="rs") config.upholstery=0;
+                    if(option.id==="recaro" && config.trim==="rstrophy") config.upholstery=0;
+
+                    // Désélection M5
+                    if(option.id==="jantes_synergy" && config.trim==="techno5") config.wheel=0;
+                    if(option.id==="pack_confort_gris" && config.trim==="techno5") config.upholstery=0;
+                    if(option.id==="pack_confort_noir" && config.trim==="techno5") config.upholstery=0;
+                }else{
+                    config.options.push(option.id);
+
+                    // Sélection M3
+                    if(option.id==="pack_cuir" && config.trim==="bose") config.upholstery=1;
+
+                    // Sélection M4 (2021)
+                    if(option.id==="pack_cuir21" && config.trim==="intens21") config.upholstery=1;
+
+                    // Sélection M4
+                    if(option.id==="alcantara" && config.trim==="rs") config.upholstery=1;
+                    if(option.id==="recaro" && config.trim==="rstrophy") config.upholstery=1;
+
+                    // Incompatibilités M5 connectivité
+                    if(option.id==="connect_5") config.options=config.options.filter(id=>id!=="connect_8");
+                    if(option.id==="connect_8") config.options=config.options.filter(id=>id!=="connect_5");
+
+                    // Sélection M5
+                    if(option.id==="jantes_synergy" && config.trim==="techno5") config.wheel=1;
+                    if(option.id==="pack_confort_gris" && config.trim==="techno5"){
+                        config.upholstery=1;
+                        config.options=config.options.filter(id=>id!=="pack_confort_noir");
+                    }
+                    if(option.id==="pack_confort_noir" && config.trim==="techno5"){
+                        config.upholstery=2;
+                        config.options=config.options.filter(id=>id!=="pack_confort_gris");
+                    }
+                }
+
+                if(option.id==="spare" || option.id==="spareRS"){
+                    config.options=config.options.filter(id=>id!=="galette" && id!=="galetteRS");
+                }
+                if(option.id==="galette" || option.id==="galetteRS"){
+                    config.options=config.options.filter(id=>id!=="spare" && id!=="spareRS");
+                }
+
+                render();
+            };
+
+            grid.appendChild(b);
+        });
+
+        c.appendChild(categoryBox);
+    });
+}
+
+
+function renderAccessories(){
+    const c=document.getElementById("accessoryChoices");
+    if(!c) return;
+    c.innerHTML="";
+
+    if(config.generation!=="megane5"){
+        c.innerHTML='<span class="empty-section-msg">Aucun accessoire disponible pour ce modèle.</span>';
+        return;
+    }
+
+    const accessories=getAccessories();
+    const categories=[
+        "Design et personnalisation",
+        "Attelage et portage",
+        "Sécurité et sérénité",
+        "Confort et protection"
+    ];
+
+    categories.forEach(category=>{
+        const items=accessories.filter(acc=>acc.category===category);
+        if(!items.length) return;
+
+        const categoryBox=document.createElement("div");
+        categoryBox.className="option-category";
+
+        const selectedCount=items.filter(acc=>config.accessories.includes(acc.id)).length;
+
+        categoryBox.innerHTML=`
+            <div class="option-category-title">
+                <span>${category}</span>
+                <span class="option-category-count ${selectedCount>0?"visible":""}">
+                    ${selectedCount}
+                </span>
+            </div>
+            <div class="option-grid"></div>
+        `;
+
+        const grid=categoryBox.querySelector(".option-grid");
+
+        items.forEach(acc=>{
+            const b=document.createElement("button");
+            b.className="option "+(config.accessories.includes(acc.id)?"active":"");
+
+            b.innerHTML=`
+                <div class="option-img-container">
+                    <img src="${acc.image}" alt="${acc.name}" onerror="imageError(this,'${acc.image}')">
+                </div>
+                <div class="option-content">
+                    <strong>${acc.name}</strong>
+                    ${acc.description?`<span class="option-description">${acc.description}</span>`:""}
+                    <div class="option-bottom">
+                        <div class="option-check">
+                            <span>${config.accessories.includes(acc.id)?"sélectionné":"sélectionner"}</span>
+                        </div>
+                        <span class="option-price">+ ${euro(acc.price)}</span>
+                    </div>
+                </div>
+            `;
+
+            b.onclick=()=>{
+                if(config.accessories.includes(acc.id)){
+                    config.accessories=config.accessories.filter(id=>id!==acc.id);
+                }else{
+                    config.accessories.push(acc.id);
+                }
+                render();
+            };
+
+            grid.appendChild(b);
+        });
+
+        c.appendChild(categoryBox);
+    });
+}
+
+
+/* =========================================================
+   IMAGE ERROR
+========================================================= */
+
+function imageError(img,file){
+    const box=document.createElement("div");
+    box.className="image-missing";
+    box.innerHTML="Image<br>introuvable";
+    img.replaceWith(box);
+}
+
+
+/* =========================================================
+   PRIX
+========================================================= */
+
+function calculatePrice(){
+    const eng = currentEngine();
+    if(!eng) return 0;
+
+    let total = eng[2];
+
+    if(isM4() && config.body==="estate"){
+        total+=1000;
+    }
+
+    const colors=getColorsList();
+    if(colors[config.color]){
+        total+=colors[config.color][2];
+    }
+
+    const wheels=getWheels();
+    if(wheels[config.wheel]){
+        total+=wheels[config.wheel][2];
+    }
+
+    const upholstery=getUpholsteries();
+    if(upholstery[config.upholstery]){
+        if(!(config.trim==="rs" && config.upholstery===1) &&
+           !(config.trim==="rstrophy" && config.upholstery===1) &&
+           !(config.trim==="bose" && config.upholstery===1) &&
+           !(config.trim==="intens21" && config.upholstery===1)){
+            total+=upholstery[config.upholstery][2];
+        }
+    }
+
+    getOptions().forEach(option=>{
+        if(config.options.includes(option.id)){
+            total+=option.price;
+        }
+    });
+
+    getAccessories().forEach(acc=>{
+        if(config.accessories.includes(acc.id)){
+            total+=acc.price;
+        }
+    });
+
+    return total;
+}
+
+
+/* =========================================================
+   RÉCAPITULATIF
+========================================================= */
+
+function renderSummary(){
+    const c=document.getElementById("summary");
+    if(!c) return;
+
+    const eng = currentEngine();
+    if(!eng){
+        c.innerHTML=`
+            <div class="summary-row">
+                <span>Génération</span>
+                <strong>${generations[config.generation]}</strong>
+            </div>
+            <div class="summary-row">
+                <span>Statut</span>
+                <strong>Données en attente</strong>
+            </div>
+        `;
+        return;
+    }
+
+    const colors=getColorsList();
+    const wheels=getWheels();
+    const upholstery=getUpholsteries();
+
+    const selectedOptions=getOptions().filter(option=>config.options.includes(option.id));
+    const selectedAccessories=getAccessories().filter(acc=>config.accessories.includes(acc.id));
+
+    let html=`
+        <div class="summary-row">
+            <span>Génération</span>
+            <strong>${generations[config.generation]}</strong>
+        </div>
+    `;
+
+    if(isM4()){
+        html+=`
+            <div class="summary-row">
+                <span>Carrosserie</span>
+                <strong>${config.body==="berline"?"Berline":"Estate"}</strong>
+            </div>
+        `;
+    }
+
+    html+=`
+        <div class="summary-row">
+            <span>Version</span>
+            <strong>${trimNames[config.trim]}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Motorisation</span>
+            <strong>${eng[0]}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Couleur extérieure</span>
+            <strong>${colors[config.color]?colors[config.color][0]:"—"}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Jantes</span>
+            <strong>${wheels[config.wheel]?wheels[config.wheel][0]:"—"}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Sellerie</span>
+            <strong>${upholstery[config.upholstery]?upholstery[config.upholstery][0]:"—"}</strong>
+        </div>
+    `;
+
+    if(selectedOptions.length){
+        selectedOptions.forEach(option=>{
+            html+=`
+                <div class="summary-row">
+                    <span>${option.name}</span>
+                    <strong>${option.price<0?"− "+euro(-option.price):option.price===0?includedLabel():"+ "+euro(option.price)}</strong>
+                </div>
+            `;
+        });
+    } else {
+        html+=`
+            <div class="summary-row">
+                <span>Équipements</span>
+                <strong>Aucun</strong>
+            </div>
+        `;
+    }
+
+    if(config.generation==="megane5"){
+        if(selectedAccessories.length){
+            selectedAccessories.forEach(acc=>{
+                html+=`
+                    <div class="summary-row">
+                        <span>Accessoire : ${acc.name}</span>
+                        <strong>+ ${euro(acc.price)}</strong>
+                    </div>
+                `;
+            });
+        } else {
+            html+=`
+                <div class="summary-row">
+                    <span>Accessoires</span>
+                    <strong>Aucun</strong>
+                </div>
+            `;
+        }
+    }
+
+    c.innerHTML=html;
+}
+
+
+/* =========================================================
+   GRANDE IMAGE ET GESTION DYNAMIQUE DES FICHIERS
+========================================================= */
+
+function slugify(text){
+    return text
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_+|_+$/g, "");
+}
+
+function getDynamicImageFileName(view){
+    if(config.generation==="megane3"){
+        let parts = ["megane3", config.trim, view];
+        const colors = getColorsList();
+        if(colors[config.color]) parts.push(slugify(colors[config.color][0]));
+        const wheels = getWheels();
+        if(wheels[config.wheel]) parts.push(slugify(wheels[config.wheel][0]));
+        return parts.join("_") + ".jpg";
+    }
+
+    const isExterior = ["front", "rear", "side", "wheels"].includes(view);
+    const isInterior = ["dashboard", "upholstery"].includes(view);
+
+    let parts = [];
+
+    if(isM4()){
+        let engineType = (isHybrid() && (view === "rear" || view === "dashboard")) ? "hybride" : "essence";
+        parts = [config.body, config.trim, engineType, view];
+
+        const colors = getColorsList();
+        const selectedColor = colors[config.color];
+        if(selectedColor){
+            const colorSlug = selectedColor[4] ? selectedColor[4] : slugify(selectedColor[0]);
+            parts.push(colorSlug);
+        }
+
+        if (isExterior) {
+            const wheels = getWheels();
+            if(wheels[config.wheel]) parts.push(slugify(wheels[config.wheel][0]));
+
+            if (config.trim === "evolution" && config.options.includes("allweather")) {
+                parts.push("pneus_tout_temps");
+            }
+        }
+
+        if (isInterior) {
+            const upholsteryList = getUpholsteries();
+            if(upholsteryList[config.upholstery]) parts.push(slugify(upholsteryList[config.upholstery][0]));
+
+            if (config.trim === "rs" && config.options.includes("alcantara")) {
+                parts.push("pack_alcantara");
+            }
+            if (config.trim === "rstrophy" && config.options.includes("recaro")) {
+                parts.push("pack_recaro");
+            }
+        }
+
+        if (view === "front" && config.options.includes("sunroof")) {
+            parts.push("toit_ouvrant_elec");
+        }
+
+        if (view === "dashboard") {
+            const eng = currentEngine();
+            const engName = eng ? eng[0] : "";
+            const isAuto = engName.includes("EDC") || engName.includes("E-Tech");
+            parts.push(isAuto ? "boite_automatique" : "boite_manuelle");
+
+            if (config.trim === "evolution") {
+                if (config.options.includes("parking_brake")) {
+                    parts.push("frein_de_parking_assiste");
+                } else {
+                    parts.push("frein_a_main_manuel");
+                }
+            }
+
+            if (config.options.includes("sunroof")) {
+                parts.push("toit_ouvrant_elec");
+            }
+
+            if (config.trim === "evolution" && config.options.includes("dash42")) {
+                parts.push("compteur_analogique");
+            }
+            if (config.trim === "techno" && config.options.includes("dash10")) {
+                parts.push("ecran_10_pouces");
+            }
+            if (config.options.includes("hud")) {
+                parts.push("affichage_tete_haute");
+            }
+        }
+    } else if(config.generation==="megane5"){
+        parts = ["megane5", config.trim, view];
+        const colors = getColorsList();
+        if(colors[config.color]) parts.push(slugify(colors[config.color][0]));
+
+        if(isExterior){
+            const wheels = getWheels();
+            if(wheels[config.wheel]) parts.push(slugify(wheels[config.wheel][0]));
+        }
+
+        if(isInterior){
+            const upholsteryList = getUpholsteries();
+            if(upholsteryList[config.upholstery]) parts.push(slugify(upholsteryList[config.upholstery][0]));
+        }
+    }
+
+    return parts.join("_") + ".jpg";
+}
+
+function changeView(view){
+    config.currentView = view;
+    const file = getDynamicImageFileName(view);
+    const container=document.getElementById("carVisual");
+    const img=document.createElement("img");
+
+    img.src=file;
+    img.alt="Renault Mégane";
+
+    img.onerror=()=>{
+        container.innerHTML=`
+            <div class="no-image">
+                <strong>Image introuvable</strong>
+                <br><br>
+                ${file}
+            </div>
+        `;
+    };
+
+    img.onload=()=>{
+        container.innerHTML="";
+        container.appendChild(img);
+    };
+}
+
+
+/* =========================================================
+   SAUVEGARDE
+========================================================= */
+
+function saveConfiguration(){
+    localStorage.setItem(
+        "meganeConfiguration",
+        JSON.stringify(config)
+    );
+    alert("Configuration enregistrée sur cet appareil.");
+}
+
+
+/* =========================================================
+   STRUCTURE DES SECTIONS DYNAMIQUES SELON GÉNÉRATION
+========================================================= */
+
+function buildSectionsLayout(){
+    const sc = document.getElementById("sectionsContainer");
+    if(!sc) return;
+
+    if(config.generation==="megane5"){
+        sc.innerHTML=`
+            <section class="section">
+                <h2>Génération</h2>
+                <div class="grid" id="generationChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez votre motorisation</h2>
+                <div id="engineChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez votre version</h2>
+                <div class="grid" id="trimChoices"></div>
+                <div id="availableFuelBox"></div>
+            </section>
+
+            <section class="section">
+                <h2>Couleur extérieure</h2>
+                <div id="colorChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Jantes</h2>
+                <div class="wheel-grid" id="wheelChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Sellerie</h2>
+                <div class="upholstery-grid" id="upholsteryChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez vos options</h2>
+                <div id="optionChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez vos accessoires</h2>
+                <div id="accessoryChoices"></div>
+            </section>
+        `;
+    } else {
+        sc.innerHTML=`
+            <section class="section">
+                <h2>Génération</h2>
+                <div class="grid" id="generationChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Carrosserie</h2>
+                <div class="grid" id="bodyChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez votre version</h2>
+                <div class="grid" id="trimChoices"></div>
+                <div id="availableFuelBox"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez votre motorisation</h2>
+                <div id="engineChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Couleur extérieure</h2>
+                <div class="colors" id="colorChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Jantes</h2>
+                <div class="wheel-grid" id="wheelChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Sellerie</h2>
+                <div class="upholstery-grid" id="upholsteryChoices"></div>
+            </section>
+
+            <section class="section">
+                <h2>Choisissez vos équipements</h2>
+                <div id="optionChoices"></div>
+            </section>
+        `;
+    }
+}
+
+
+/* =========================================================
+   AFFICHAGE GLOBAL
+========================================================= */
+
+function render(){
+    buildSectionsLayout();
+
+    renderGenerations();
+    renderBodies();
+    renderTrims();
+    renderAvailableFuels();
+    renderEngines();
+    renderColors();
+    renderUpholstery();
+    renderWheels();
+    renderOptions();
+    renderAccessories();
+    renderSummary();
+
+    changeView(config.currentView);
+
+    const price = calculatePrice();
+    document.getElementById("totalPrice").textContent = price > 0 ? euro(price) : "—";
+}
+
+render();
+
+</script>
+
+</body>
+</html>
